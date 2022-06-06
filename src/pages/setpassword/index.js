@@ -27,9 +27,11 @@ import API from 'API';
 import { checkpassword } from 'helpers/checkPassword';
 
 const Index = () => {
+  //get user from the store
   const user = useSelector((state) => state.user.value);
+  //form data (password)
   const [formData, setFormData] = useState({ password: '' });
-  //!password status
+  // password status
   const passwordStatus = [
     'Mot de passe trop faible',
     'Mot de passe convenable',
@@ -37,25 +39,29 @@ const Index = () => {
     'Mot de passe excellent',
   ];
 
-  //!handle error messages
+  //handle error messages
   const [errorMsg, setErrorMsg] = useState(null);
-  //!loading
+  //loading state
   const [loading, setLoading] = useState(false);
+  //navigation
   const navigate = useNavigate();
-  //! handle change formData
+
+  // handle change formData
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (formData.password.length === 0) {
       setErrorMsg('Code requis');
     }
   };
-  //!handle Submit Login
+  //handle Submit Login
 
   const handleSubmit = async () => {
+    //check if length === 0
     if (formData.password.length > 1) {
-      //send to endpoint
+      //start the loading state
       setLoading(true);
       try {
+        //send to endpoint
         const res = await API.post(
           '/auth/set-password',
           formData,
@@ -66,10 +72,13 @@ const Index = () => {
             },
           }
         );
-        console.log(res);
+        //navigate to login page
         navigate('/login');
       } catch (error) {
-        console.log(error);
+        //set error msg
+        setErrorMsg(error.response.data.message);
+        //end the loading state
+        setLoading(false);
       }
     }
   };

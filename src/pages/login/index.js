@@ -23,45 +23,55 @@ import { setTokens, setUser } from 'features/userSlice';
 import { useDispatch } from 'react-redux';
 
 const Index = () => {
+  // form data
   const [formData, setFormData] = useState({ email: '', password: '' });
-  //!handle error messages
+  //handle error messages
   const [errorMsg, setErrorMsg] = useState(null);
+  // loading state for login button
   const [loading, setLoading] = useState(false);
-  const [firstTime, setFirstTime] = useState(false);
+  // handle not to show error mssgs in the first time
+  const [firstTime, setFirstTime] = useState(true);
+  //redux
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //! conditions
+  // condition for Email
+  let conditionEmail = formData.email.length === 0 && firstTime === false;
+  // condition for Password
+  let conditionPassword = formData.password.length === 0 && firstTime === false;
 
-  let conditionEmail = formData.email.length === 0 && firstTime;
-  let conditionPassword = formData.password.length === 0 && firstTime;
-
-  //! handle change formData
+  // handle change formData
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (formData.email.length === 0) {
       setErrorMsg(null);
     }
   };
-  //!handle Submit Login
+  //handle Submit Login
 
   const handleSubmit = async () => {
     if (formData.email.length > 1 && formData.password.length > 1) {
-      //send to endpoint
+      //start the loading state
       setLoading(true);
       try {
+        //send to endpoint
         const res = await API.post('/auth/login', formData);
-        console.log(res);
+        // set user details and tokens
         dispatch(setUser(res.data.user));
         dispatch(setTokens(res.data.tokens));
+        // store the token in local Storage
         localStorage.setItem('token', res.data.tokens.access.token);
+        //navigate to dashboard
         navigate('/dashboard');
       } catch (error) {
+        //set Error msg
         setErrorMsg(error.response.data.message);
+        //end loading state
         setLoading(false);
       }
     } else {
-      setFirstTime(true);
+      //now you can start to show errors
+      setFirstTime(false);
     }
   };
   return (

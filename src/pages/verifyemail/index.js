@@ -28,41 +28,47 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setTokens } from 'features/userSlice';
 
 const Index = () => {
+  //get user from the store
   const user = useSelector((state) => state.user.value);
+  //form data
   const [formData, setFormData] = useState({ code: '' });
-  //!handle error messages
+  //handle error messages
   const [errorMsg, setErrorMsg] = useState(null);
+  //loading state
   const [loading, setLoading] = useState(false);
-  const [firstTime, setFirstTime] = useState(false);
+  //first time state
+  const [firstTime, setFirstTime] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //!condition
+  //condition
 
-  let conditionCode = formData.code.length > 1 && firstTime;
-  console.log(formData.code.length);
-  console.log(conditionCode);
+  let conditionCode = formData.code.length > 1 && firstTime === false;
 
-  //! handle change formData
+  // handle change formData
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  //!handle Submit Login
+  //handle Submit Login
 
   const handleSubmit = async () => {
     if (formData.code.length > 1) {
-      //send to endpoint
+      //start loading
       setLoading(true);
       try {
+        //Send to endpoint
         const res = await API.post('/auth/verify-otp', {
           code: formData.code,
           userId: user.details?.id,
         });
+        //set tokens
         dispatch(setTokens(res.data.tokens));
+        //navigate to set password page
         navigate('/setpassword');
       } catch (error) {
-        console.log(error);
+        //set error msg
         setErrorMsg(error.response.data.message);
+        //end the loading status
         setLoading(false);
       }
     }

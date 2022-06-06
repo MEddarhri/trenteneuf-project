@@ -34,40 +34,50 @@ import FieldRequired from 'shared/fieldrequired';
 import { setUser } from 'features/userSlice';
 
 const Index = () => {
+  // form data
   const [formData, setFormData] = useState({ email: '' });
-  //!handle error messages
+  //handle error messages
   const [errorMsg, setErrorMsg] = useState(null);
+  // loading state for register button
   const [loading, setLoading] = useState(false);
-  const [firstTime, setFirstTime] = useState(false);
+  // handle not to show error mssgs in the first time
+  const [firstTime, setFirstTime] = useState(true);
+  //redux
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //!conditions
-  let conditionEmail = formData.email.length === 0 && firstTime;
+  //condition Email
+  let conditionEmail = formData.email.length === 0 && firstTime === false;
 
-  //! handle change formData
+  // handle change formData
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (formData.email.length === 0) {
-      console.log('zero');
       setErrorMsg(null);
     }
   };
-  //!handle Submit Login
+  //handle Submit Register
 
   const handleSubmit = async () => {
     if (formData.email.length > 1) {
-      //send to endpoint
+      //set loading
       setLoading(true);
       try {
+        //send to endpoint
         const res = await API.post('/auth/register', formData);
-        console.log(res);
+        //set User details
         dispatch(setUser(res.data.user));
+        //navigate to verification
         navigate('/verification');
       } catch (error) {
+        //set Error mssgs
         setErrorMsg(error.response.data.message);
+        //end loading state
         setLoading(false);
       }
+    } else {
+      //now show error mssgs cause it's not the first time anymore
+      setFirstTime(false);
     }
   };
   return (
@@ -116,15 +126,15 @@ const Index = () => {
         <ContainerRight>
           <TrustImg src='/images/trustpilot.png' />
           <ReviewContainer>
+            <NameContainer>
+              <FullName>Nthalie Durand, WellPharma</FullName>
+              <Cursor src='/images/cursor.png' />
+            </NameContainer>
             <ProfilPictureLogin src='/images/profile-picture-login.png' />
             <ReviewParagraph>
               {`“In the tech world, you can’t afford to be slow. Because of Uizard,
             within five days of getting my idea – with only two days of working
             in the Uizard platform – I already had a proof of concept.”`}
-              <NameContainer>
-                <FullName>Nthalie Durand, WellPharma</FullName>
-                <Cursor src='/images/cursor.png' />
-              </NameContainer>
             </ReviewParagraph>
           </ReviewContainer>
           <JoinUsParagraph>

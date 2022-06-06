@@ -43,7 +43,7 @@ export const NavLogin = styled.nav`
   justify-content: space-between;
 `;
 
-export const LoginButtonNav = styled.a`
+export const LoginButtonNav = styled.span`
   font-weight: 800;
   font-size: 14px;
   line-height: 18px;
