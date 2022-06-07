@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { GlobalStyle } from 'app/BaseStyling';
 import AppRoutes from './AppRoutes';
-import 'styles/antd.css';
+import 'styles/App.css';
 
 const Index = () => {
   return (
