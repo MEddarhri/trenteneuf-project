@@ -49,7 +49,7 @@ export const DayNumberToday = styled.div`
   position: absolute;
   width: 25px;
   height: 25px;
-  border-radius: 25px;
+  border-radius: 60px;
   top: 8px;
   left: 8px;
   font-weight: 600;

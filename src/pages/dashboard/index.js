@@ -30,7 +30,6 @@ import {
   Wrapper,
 } from './Styles';
 import { useSelector } from 'react-redux';
-import 'styles/dashboard.css';
 
 const Index = () => {
   //get toggle value for add task
