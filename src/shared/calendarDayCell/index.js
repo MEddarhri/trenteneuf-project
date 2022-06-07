@@ -1,4 +1,11 @@
+import { setGuardToAdd, setGuardToEdit } from 'features/guardSlice';
+import {
+  toggleAddGuard,
+  toggleConfirmGuard,
+  toggleEditGuard,
+} from 'features/toggleSlice';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
   BorderTop,
   Container,
@@ -9,7 +16,9 @@ import {
   TodaySentence,
 } from './Styles';
 
-const index = ({ dayDisabled, todaysDay = false, item, events }) => {
+const Index = ({ dayDisabled, todaysDay = false, item, events }) => {
+  //dispatch function
+  const dispatch = useDispatch();
   let guard = null;
   if (dayDisabled == false) {
     events.forEach((element) => {
@@ -22,12 +31,34 @@ const index = ({ dayDisabled, todaysDay = false, item, events }) => {
       }
     });
   }
-  let guardStatus = guard ? guard.pending : null;
+  let guardConfirmed = guard ? guard.confirmed : null;
+
+  //handle click on day cell to add a new guard with the selected date on the guard
+  const handleClickOnDayCell = () => {
+    if (guardConfirmed === null && dayDisabled === false) {
+      dispatch(
+        setGuardToAdd({ date: item.year + '-' + item.month + '-' + item.day })
+      );
+      dispatch(toggleAddGuard());
+    }
+  };
+  //handle click on guard to confirm it or delete it
+  const handleClickOnGuard = () => {
+    if (guardConfirmed === false) {
+      dispatch(toggleConfirmGuard());
+    } else {
+      dispatch(toggleEditGuard());
+    }
+  };
 
   return (
-    <Container dayDisabled={dayDisabled} guardStatus={guardStatus}>
+    <Container
+      dayDisabled={dayDisabled}
+      guardStatus={guardConfirmed}
+      onClick={handleClickOnDayCell}
+    >
       {/* Border top of the guard */}
-      {guard && <BorderTop guardStatus={guard.pending} />}
+      {guard && <BorderTop guardStatus={guard.confirmed} />}
       {/* Number of the day if it's not the current day */}
       {todaysDay === false && (
         <DayNumber dayDisabled={dayDisabled}>{item.day}</DayNumber>
@@ -40,7 +71,7 @@ const index = ({ dayDisabled, todaysDay = false, item, events }) => {
       {todaysDay && <TodaySentence>{`Aujourd’hui`}</TodaySentence>}
       {/* if there's a guard show the guard */}
       {guard && (
-        <GuardInCell guardStatus={guardStatus}>
+        <GuardInCell guardStatus={guardConfirmed} onClick={handleClickOnGuard}>
           <img src='/images/clock-icon.svg' />
           <TimeFromTo>{guard.startTime + ' - ' + guard.endTime}</TimeFromTo>
         </GuardInCell>
@@ -49,4 +80,4 @@ const index = ({ dayDisabled, todaysDay = false, item, events }) => {
   );
 };
 
-export default index;
+export default Index;

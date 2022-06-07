@@ -13,7 +13,7 @@ import {
 } from './Styles';
 import Logo from 'shared/logo';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleAddTask } from 'features/toggleSlice';
+import { toggleAddGuard } from 'features/toggleSlice';
 
 const Index = ({ active }) => {
   //get toggle value for add addTask
@@ -23,7 +23,7 @@ const Index = ({ active }) => {
 
   //handle click toggle add addTask
   const handleToggleAddTask = () => {
-    dispatch(toggleAddTask());
+    dispatch(toggleAddGuard());
   };
 
   return (

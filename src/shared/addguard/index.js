@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import locale from 'antd/es/date-picker/locale/fr_CA';
-import AddEditNotif from 'shared/notificationAddEdit';
+import Notif from 'shared/notificationAddEdit';
 import { FiChevronDown } from 'react-icons/fi';
+import { MdClose } from 'react-icons/md';
 import { DatePicker, Select, TimePicker } from 'antd';
 import 'moment/locale/fr';
 import SelectDateIcon from 'shared/inputicon/SelectDateIcon';
@@ -15,6 +16,7 @@ import {
   AddGuardOverlay,
   BottomPart,
   ButtonAddEdit,
+  CloseButtonTopRight,
   Option,
   SelectContLeft,
   SelectStatusContainer,
@@ -22,10 +24,14 @@ import {
   SplitTimePicker,
   TopPart,
 } from './Styles';
-import { toggleAddTask } from 'features/toggleSlice';
-import { useDispatch } from 'react-redux';
+import { toggleAddGuard } from 'features/toggleSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Index = () => {
+  //get the date of the guard to add if exists
+  const dateOfTheGuardToAdd = useSelector(
+    (state) => state.guard.guardToAdd.date
+  );
   //addGuard container ref
   const addGuardRef = useRef(null);
   //guard data
@@ -62,17 +68,20 @@ const Index = () => {
   //close when click Outside
   const handleClickOutside = (e) => {
     if (addGuardRef.current && e.target.contains(addGuardRef.current)) {
-      dispatch(toggleAddTask());
+      dispatch(toggleAddGuard());
     }
   };
 
   //handle click on cancel button
   const handleCloseAddTask = () => {
-    dispatch(toggleAddTask());
+    dispatch(toggleAddGuard());
   };
   return (
     <AddGuardOverlay onClick={handleClickOutside}>
       <AddEditGuardContainer ref={addGuardRef}>
+        <CloseButtonTopRight onClick={handleCloseAddTask}>
+          <MdClose size='25px' color='#636E72' />
+        </CloseButtonTopRight>
         <TopPart>
           <AddEditGuardTitle>Ajouter une garde</AddEditGuardTitle>
           <AddEditGuardInputCont>
@@ -80,7 +89,7 @@ const Index = () => {
             <DatePicker
               locale={locale}
               placeholder='Sélectioner une date'
-              defaultValue={moment(new Date())}
+              defaultValue={moment(dateOfTheGuardToAdd || new Date())}
               format='dddd, DD MMM YYYY'
               suffixIcon={<SelectDateIcon />}
               onChange={handleChangeDate}
@@ -111,7 +120,7 @@ const Index = () => {
                 <Option value='Confirmée'>Confirmée</Option>
               </Select>
             </SelectStatusContainer>
-            <AddEditNotif confirmed={guard.status === 'Confirmée'} />
+            <Notif confirmed={guard.status === 'Confirmée'} />
           </AddEditGuardInputCont>
         </TopPart>
 

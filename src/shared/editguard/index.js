@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import locale from 'antd/es/date-picker/locale/fr_CA';
-import AddEditNotif from 'shared/notificationAddEdit';
 import { FiChevronDown } from 'react-icons/fi';
+import { MdClose } from 'react-icons/md';
 import { DatePicker, Select, TimePicker } from 'antd';
 import 'moment/locale/fr';
 import SelectDateIcon from 'shared/inputicon/SelectDateIcon';
@@ -15,6 +15,11 @@ import {
   AddGuardOverlay,
   BottomPart,
   ButtonAddEdit,
+  ButtonDelete,
+  CloseButtonTopRight,
+  ConfirmedStatusContainer,
+  ConfirmedStatusRight,
+  DeleteSvg,
   Option,
   SelectContLeft,
   SelectStatusContainer,
@@ -22,8 +27,12 @@ import {
   SplitTimePicker,
   TopPart,
 } from './Styles';
+import { toggleDeleteGuard, toggleEditGuard } from 'features/toggleSlice';
+import { useDispatch } from 'react-redux';
 
 const Index = () => {
+  // edit guard ref
+  const editGuardRef = useRef(null);
   const [guard, setGuard] = useState({
     date: '',
     startTime: '',
@@ -34,6 +43,8 @@ const Index = () => {
   const { Option } = Select;
   //time format
   const format = 'HH:mm';
+  //use dispatch
+  const dispatch = useDispatch();
 
   //handle change date
   const handleChangeDate = (date, dateString) => {
@@ -52,11 +63,30 @@ const Index = () => {
     setGuard({ ...guard, status });
   };
 
+  const handleClickOutside = (e) => {
+    if (editGuardRef.current && e.target.contains(editGuardRef.current)) {
+      dispatch(toggleEditGuard());
+    }
+  };
+
+  //handle click on cancel button
+  const handleCloseEditGuard = () => {
+    dispatch(toggleEditGuard());
+  };
+  //handle click on delete icon in edit guard area
+  const handleClickOnDelete = () => {
+    dispatch(toggleEditGuard());
+    dispatch(toggleDeleteGuard());
+  };
+
   return (
-    <AddGuardOverlay>
-      <AddEditGuardContainer>
+    <AddGuardOverlay onClick={handleClickOutside}>
+      <AddEditGuardContainer ref={editGuardRef}>
+        <CloseButtonTopRight onClick={handleCloseEditGuard}>
+          <MdClose size='25px' color='#636E72' />
+        </CloseButtonTopRight>
         <TopPart>
-          <AddEditGuardTitle>Ajouter une garde</AddEditGuardTitle>
+          <AddEditGuardTitle>Modifier la garde</AddEditGuardTitle>
           <AddEditGuardInputCont>
             <AddEditGuardLabel>Date</AddEditGuardLabel>
             <DatePicker
@@ -83,21 +113,30 @@ const Index = () => {
             </SelectTimeContainer>
             <SelectStatusContainer>
               <SelectContLeft>Status</SelectContLeft>
-              <Select
+              <ConfirmedStatusContainer>
+                <img src='/images/checked-icon.svg' alt='checked' />
+                <ConfirmedStatusRight>confirmée</ConfirmedStatusRight>
+              </ConfirmedStatusContainer>
+              {/* when the response comes we gonna check if the guard is confirmed or not and then we gonna see if we gonna show the select or the confirmed status */}
+              {/* <Select
                 defaultValue='En attente'
                 title='Select status'
                 onChange={handleChangeSelectStatus}
               >
                 <Option value='En attente'>En attente</Option>
                 <Option value='Confirmée'>Confirmée</Option>
-              </Select>
+              </Select> */}
             </SelectStatusContainer>
-            <AddEditNotif />
           </AddEditGuardInputCont>
         </TopPart>
 
         <BottomPart>
-          <ButtonAddEdit regular={true}>Annuler</ButtonAddEdit>
+          <ButtonDelete onClick={handleClickOnDelete}>
+            <DeleteSvg />
+          </ButtonDelete>
+          <ButtonAddEdit regular={true} onClick={handleCloseEditGuard}>
+            Annuler
+          </ButtonAddEdit>
           <ButtonAddEdit>Confirmer</ButtonAddEdit>
         </BottomPart>
       </AddEditGuardContainer>

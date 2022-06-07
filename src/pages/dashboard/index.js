@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import NavDashboard from 'shared/dashnav';
 import Calendar from 'shared/calendar';
 import MonthGuardsOverview from 'shared/monthoverview';
-import AddEditNotif from 'shared/notificationAddEdit';
-import AddEditGuard from 'shared/addguard';
+import AddGuard from 'shared/addguard';
+import EditGuard from 'shared/editguard';
+import DeleteGuard from 'shared/deleteguard';
+import ConfirmGuard from 'shared/confirmguard';
 import { FiChevronDown } from 'react-icons/fi';
 import { DatePicker, Select, TimePicker } from 'antd';
 import { data } from 'fakeData';
@@ -52,7 +54,13 @@ import { useSelector } from 'react-redux';
 
 const Index = () => {
   //get toggle value for add task
-  const addTask = useSelector((state) => state.toggle.addTask);
+  const addGuard = useSelector((state) => state.toggle.addGuard);
+  //get toggle value for edit guard
+  const editGuard = useSelector((state) => state.toggle.editGuard);
+  //get toggle value for delete guard
+  const deleteGuard = useSelector((state) => state.toggle.deleteGuard);
+  // get the toggle for confirm guard
+  const confirmGuard = useSelector((state) => state.toggle.confirmGuard);
   //time format timePicker
   const format = 'HH:mm';
   //start date of the calendar set to current date
@@ -102,7 +110,10 @@ const Index = () => {
   return (
     <Wrapper>
       {/* add guard overlay  */}
-      {addTask && <AddEditGuard />}
+      {addGuard && <AddGuard />}
+      {editGuard && <EditGuard />}
+      {deleteGuard && <DeleteGuard />}
+      {confirmGuard && <ConfirmGuard />}
       <DashContainer>
         <NavDashboard active='Mes gardes' />
         <MainCalendarContainer>

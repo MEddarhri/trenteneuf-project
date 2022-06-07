@@ -16,19 +16,27 @@ import {
   TimeFromToContainer,
 } from './Styles';
 import { useHandleClickOutside } from 'hooks/useHandleClickOutside';
+import { toggleDeleteGuard, toggleEditGuard } from 'features/toggleSlice';
+import { useDispatch } from 'react-redux';
 
 const Index = ({ pending }) => {
   const [showEditAndDelete, setShowEditAndDelete] = useState(false);
-  //!refs
+  //useDispatch
+  const dispatch = useDispatch();
+  //refs
   const buttonRefEdit = useRef(null);
   const editAndDeleteRef = useRef(null);
-  //!handle Click Outside
+  //handle Click Outside
   useHandleClickOutside(editAndDeleteRef, buttonRefEdit, setShowEditAndDelete);
 
-  //!handle show edit and delete
+  //handle show edit and delete
 
   const handleShowEditAndDelete = () => {
     setShowEditAndDelete((prev) => !prev);
+  };
+  //handle click on edit guard
+  const handleClickEdit = () => {
+    dispatch(toggleEditGuard());
   };
 
   return (
@@ -54,8 +62,14 @@ const Index = ({ pending }) => {
             <BiDotsVerticalRounded color='#fff' size='25px' />
             {showEditAndDelete && (
               <EditAndDelete ref={editAndDeleteRef}>
-                <ButtonEditAndDelete>Modifier</ButtonEditAndDelete>
-                <ButtonEditAndDelete>Supprimer</ButtonEditAndDelete>
+                <ButtonEditAndDelete onClick={handleClickEdit}>
+                  Modifier
+                </ButtonEditAndDelete>
+                <ButtonEditAndDelete
+                  onClick={() => dispatch(toggleDeleteGuard())}
+                >
+                  Supprimer
+                </ButtonEditAndDelete>
               </EditAndDelete>
             )}
           </GuardButton>

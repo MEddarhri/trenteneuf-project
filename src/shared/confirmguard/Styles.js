@@ -23,84 +23,41 @@ export const AddEditGuardContainer = styled.div`
   background-color: #fff;
   overflow: hidden;
 `;
+
 export const CloseButtonTopRight = styled.button`
   position: absolute;
-  padding: 15px 15px;
+  padding: 10px 15px;
   top: 0;
   right: 0;
 `;
-
 export const TopPart = styled.div`
-  padding: 31px 42px 19px 39px;
+  padding: 31px 42px 36px 39px;
 `;
 
-export const AddEditGuardTitle = styled.h3`
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 24px;
-  color: #111314;
-  margin-bottom: 35px;
-`;
-
-export const AddEditGuardInputCont = styled.div`
+export const ImgAndTitleContainer = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
-  & > * + * {
-    margin-top: 25px;
-  }
+  margin-bottom: 20px;
+`;
+export const ImgContainer = styled.div`
+  height: 122px;
+  width: 112px;
 `;
 
-export const AddEditGuardLabel = styled.p`
-  font-weight: 600;
+export const GuardContent = styled.p`
+  font-weight: 500;
   font-size: 14px;
   line-height: 24px;
   color: #a3a3a3;
 `;
 
-export const SelectTimeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #dfe6e9;
-  padding-bottom: 25px;
-  & > * + * {
-    margin-left: 16px;
-  }
-`;
-
-export const SelectTime = styled.div`
-  position: relative;
-  width: 140px;
-  height: 40px;
-  background-color: #42a5df;
-`;
-
-export const SplitTimePicker = styled.div`
-  font-weight: 600;
-  font-size: 14px;
+export const DeleteGuardSentence = styled.h2`
+  font-weight: 700;
+  font-size: 18px;
   line-height: 24px;
-  /* identical to box height, or 171% */
-
-  letter-spacing: 0.02em;
-
-  color: #636e72;
-`;
-
-export const SelectStatusContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const SelectContLeft = styled.p`
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 24px;
-  /* identical to box height, or 171% */
-
-  letter-spacing: 0.02em;
-
-  color: #142b37;
+  color: #111314;
 `;
 
 export const BottomPart = styled.div`
@@ -125,7 +82,7 @@ export const ButtonAddEdit = styled.button`
   line-height: 16px;
   text-align: center;
   color: ${(props) => (props.regular ? '#111314' : '#fff')};
-  background: ${(props) => (props.regular ? '#fff' : '#00b963')};
+  background: ${(props) => (props.regular ? '#fff' : '#00B963')};
   border-radius: 7px;
   ${(props) =>
     props.regular &&

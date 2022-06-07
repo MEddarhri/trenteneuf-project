@@ -8,7 +8,7 @@ export const Container = styled.div`
     props.confirmed ? 'rgba(0, 95, 248, 0.12)' : 'rgba(253, 148, 0, 0.12)'};
   border-radius: 6px;
   & > * + * {
-    margin-left: 10px;
+    margin-left: 15px;
   }
 `;
 export const NotificationDescription = styled.p`
@@ -16,7 +16,7 @@ export const NotificationDescription = styled.p`
   font-weight: 500;
   font-size: 12px;
   line-height: 22px;
-  text-align: center;
+  text-align: left;
   /* or 183% */
 
   display: flex;

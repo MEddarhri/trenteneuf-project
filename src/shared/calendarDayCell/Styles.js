@@ -8,20 +8,27 @@ export const Container = styled.div`
       return '#F7F7F7';
     } else {
       if (props.guardStatus) {
-        return 'rgba(253, 148, 0, 0.08)';
+        return 'rgba(0, 185, 99, 0.08)';
       }
       if (props.guardStatus === false) {
-        return 'rgba(0, 185, 99, 0.08)';
+        return 'rgba(253, 148, 0, 0.08)';
       }
       return '#fff';
     }
   }};
+  &:hover {
+    ${(props) => {
+      if (props.dayDisabled === false && props.guardStatus === null) {
+        return `cursor: pointer;background-color: rgba(247, 247,247,.5);`;
+      }
+    }}
+  }
 `;
 export const BorderTop = styled.div`
   position: absolute;
   width: 100%;
   height: 4px;
-  background-color: ${(props) => (props.guardStatus ? '#fd9400' : '#00B963')};
+  background-color: ${(props) => (props.guardStatus ? '#00B963' : '#fd9400')};
 `;
 
 export const DayNumber = styled.div`
@@ -73,9 +80,10 @@ export const GuardInCell = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  background-color: ${(props) => (props.guardStatus ? '#fd9400' : '#00B963')};
+  background-color: ${(props) => (props.guardStatus ? '#00B963' : '#fd9400')};
   padding: 3px 2px;
   user-select: none;
+  cursor: pointer;
   & > * + * {
     margin-left: 5px;
   }
