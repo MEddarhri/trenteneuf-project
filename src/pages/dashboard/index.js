@@ -6,24 +6,12 @@ import AddGuard from 'shared/addguard';
 import EditGuard from 'shared/editguard';
 import DeleteGuard from 'shared/deleteguard';
 import ConfirmGuard from 'shared/confirmguard';
-import { FiChevronDown } from 'react-icons/fi';
-import { DatePicker, Select, TimePicker } from 'antd';
+import { Select } from 'antd';
 import { data } from 'fakeData';
-import SelectDateIcon from 'shared/inputicon/SelectDateIcon';
-import moment from 'moment';
 
 import {
-  AddEditGuardContainer,
-  AddEditGuardInputCont,
-  AddEditGuardLabel,
-  AddEditGuardTitle,
-  AddGuardContainer,
-  AddGuardOverlay,
-  BottomPart,
-  ButtonAddEdit,
   CalendarArea,
   CalendarHeading,
-  ConfirmAndCancelBtnCont,
   DashContainer,
   FilterButton,
   FilterSvg,
@@ -36,21 +24,13 @@ import {
   NextGuardsArea,
   NextGuardTitle,
   NextGuardTitleContainer,
-  Option,
-  SelectArrowDown,
-  SelectContLeft,
   SelectDateContainer,
-  SelectStatusContainer,
-  SelectTimeContainer,
-  SelectView,
-  SelectViewContainer,
   SlideBtn,
   SlideMonthContainer,
-  SplitTimePicker,
-  TopPart,
   Wrapper,
 } from './Styles';
 import { useSelector } from 'react-redux';
+import 'styles/dashboard.css';
 
 const Index = () => {
   //get toggle value for add task
